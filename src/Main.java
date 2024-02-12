@@ -15,7 +15,19 @@ public class Main{
                 System.out.println("please type Exit");
                 isPlaying = !(input.next().equals("Exit"));
             }
-            if(PromptPlayer("Type 'Hello'. or 'menu' ", new String[]{"Hello","menu"}).equals("menu")) {isMenu=true;}
+
+            switch(PromptPlayer("Type 'Play'. or 'menu' ", new String[]{"Play","menu"})){
+                case "Play":
+                    Player player = new Player();
+                    player.getFloor().playFloor();
+                    break;
+
+                case "menu":
+                    break;
+                default:
+
+            }
+
         }
         String further_programming="Hello";
         System.out.println(further_programming);
@@ -30,6 +42,7 @@ public class Main{
                     return validAns;
                 }
             }
+
             System.out.println("Invalid input, please try again");
         }
     }
