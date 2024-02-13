@@ -1,8 +1,13 @@
+
+
 import java.util.Scanner;
 public class Main{
+    private static Scanner input;
+    private static final ObjectManagement ObjManger = new ObjectManagement();
+
     private static boolean isMenu;
     private static boolean isPlaying;
-    private static Scanner input;
+    private static Player player;
 
     public static void main(String[] args) {
 
@@ -11,19 +16,27 @@ public class Main{
         input = new Scanner(System.in);
 
         while(isPlaying){
-            while (isMenu && isPlaying) {
-                System.out.println("please type Exit");
-                isPlaying = !(input.next().equals("Exit"));
-            }
-
-            switch(PromptPlayer("Type 'Play'. or 'menu' ", new String[]{"Play","menu"})){
+            switch(PromptPlayer("Type 'New','Play', 'menu' ", new String[]{"Play","menu","New"})){
                 case "Play":
-                    Player player = new Player();
-                    player.getFloor().playFloor();
+                    player = new Player();
+                    player= ObjManger.loadPlayer();
+
+                    System.out.printf("You have %s hp \n",player.getHealth());
+                    player.takeDamage(15);
+                    System.out.printf("You have %s hp \n",player.getHealth());
+                    //player.getFloor().playFloor(player);
                     break;
 
                 case "menu":
+                    isMenu= true;
+                    Menu();
                     break;
+
+                case "New":
+                    player = new Player();
+                    ObjManger.savePlayer(player);
+                    break;
+
                 default:
 
             }
@@ -52,6 +65,22 @@ public class Main{
         answer= (E) input.nextLine();
 
         return answer;
+    }
+    public static void Menu(){
+        while (isMenu && isPlaying) {
+            switch(PromptPlayer("Type 'Return'. or 'Exit' or 'save' ", new String[]{"Return","Exit","save"})){
+                case "Return":
+                    isMenu=false;
+                    break;
+                case "Exit":
+                    isPlaying = false;
+                    break;
+
+                case "save":
+                    ObjManger.savePlayer(player);
+                    break;
+            }
+        }
     }
 
 
